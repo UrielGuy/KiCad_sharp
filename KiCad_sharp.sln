@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiCad_sharp", "KiCad_sharp\KiCad_sharp.csproj", "{38013137-D8C4-438C-AF94-1E0E4D4C0D29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiCad_sharp_samples", "KiCad_sharp_samples\KiCad_sharp_samples.csproj", "{E4B91A20-1654-4902-8B13-3A21291E4F9E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38013137-D8C4-438C-AF94-1E0E4D4C0D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38013137-D8C4-438C-AF94-1E0E4D4C0D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38013137-D8C4-438C-AF94-1E0E4D4C0D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38013137-D8C4-438C-AF94-1E0E4D4C0D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4B91A20-1654-4902-8B13-3A21291E4F9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4B91A20-1654-4902-8B13-3A21291E4F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4B91A20-1654-4902-8B13-3A21291E4F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4B91A20-1654-4902-8B13-3A21291E4F9E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1294B1D7-99FD-47E1-88FA-8D809C2826E2}
+	EndGlobalSection
+EndGlobal
