@@ -30,5 +30,6 @@ At this stage I'd recommend checking the samples in the solution. They show alot
 ## Konown Issues: 
 - Text tags are not rotated with components
 - API for arcs is not uniform between drawing layers and Copper layers
+- Bounds are not properly calculated for arcs.
 
 I recommend the checking the wiki for explenation and common use cases for elements of the Library
