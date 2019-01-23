@@ -326,7 +326,7 @@ namespace KiCad
         /// </summary>
         public Via ContinueWithVia(double size, double drill)
         {
-            lastFront = !lastFront;
+            //lastFront = !lastFront;
             return DrawVia(lastPoint, size, drill, lastNet, !lastFront);
         }
 

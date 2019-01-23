@@ -244,7 +244,7 @@ namespace KiCad
 
                 if (type == "KiCad")
                 {
-                    var path = uri.Replace("${KISYSMOD}", @"C:\Program Files (x86)\KiCad\share\kicad\modules") + "\\" + footprint + ".kicad_mod";
+                    var path = uri.Replace("${KISYSMOD}", @"C:\Program Files\KiCad\share\kicad\modules") + "\\" + footprint + ".kicad_mod";
                     m_component_texts[key] = File.ReadAllText(path);
                 }
                 else if (type.ToLower() == "github")

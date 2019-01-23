@@ -156,7 +156,7 @@ namespace KiCad_sharp_samples
             pga.AddLatch(lines[2]);
             foreach (var tp in test_points) pga.AddPads(tp);
             // Try to change this for true and see the bottom layer PCB created.
-            pga.Generate("atmega_programmer", false);
+            pga.Generate("atmega_programmer", KiCad.PogoPinAdapter.BottomMode.PCB_connect_direct);
 
             
         }

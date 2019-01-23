@@ -128,7 +128,7 @@ difference() {
         /// <summary>
         /// Create PCB file for the bottom layer if configured
         /// </summary>
-        private PCB CreatePCBBottom()
+        private PCB CreatePCBBottom(BottomMode bottom_mode)
         {
             PCB out_pcb = new PCB();
 
@@ -155,30 +155,69 @@ difference() {
             out_pcb.Edge.AddCircle(new PointF(right - 5, bottom -  5), 2.05);
 
             Dictionary<Net, Net> nets = new Dictionary<Net, Net>();
+            List<Components.Component> testPoints = new List<Component>();
             foreach (var pad in pads)
             {
                 nets[pad.Net] = out_pcb.Nets.AddNet(pad.Net.Number, pad.Net.Name);
-                out_pcb.Components.AddComponent("TestPoint", "TestPoint_Pad_D1.5mm", pad.Net.Name, pad.Location, pad.Owner.Angle, true).Pads[1].Net = nets[pad.Net];
+                var testpoint = out_pcb.Components.AddComponent("TestPoint", "TestPoint_Pad_D1.5mm", pad.Net.Name, pad.Location, pad.Owner.Angle, false);
+                testpoint.Pads[1].Net = nets[pad.Net];
+                testPoints.Add(testpoint);
             }
 
             var connector = out_pcb.Components.AddComponent("Connector_PinSocket_2.54mm",
                 "PinSocket_1x" + pads.Count.ToString().PadLeft(2, '0') + "_P2.54mm_Horizontal",
                 "OUT_CONN_1",
-                (right + left) / 2 - 1.27 * (pads.Count - 1),
+                (right + left) / 2 + 1.27 * (pads.Count - 1),
                 bottom - 10.15,
-                90,
-                true
+                270,
+                false
                 );
 
-            pads.Sort((a, b) => (a.Location.X.CompareTo(b.Location.X) != 0 ? a.Location.X.CompareTo(b.Location.X) : b.Location.Y.CompareTo(a.Location.Y)));
+            pads.Sort((b, a) => (a.Location.X.CompareTo(b.Location.X) != 0 ? a.Location.X.CompareTo(b.Location.X) : b.Location.Y.CompareTo(a.Location.Y)));
             for (int i = 0; i < pads.Count; i++)
             {
                 connector.Pads[i + 1].Net = nets[pads[i].Net];
+                out_pcb.FSilk.AddText(connector.Pads[i + 1].Net.Name, connector.Pads[i + 1].Location + new SizeF(0, 5.65f), 90, 1, 1, 0.2);
+                out_pcb.BSilk.AddText(connector.Pads[i + 1].Net.Name, connector.Pads[i + 1].Location + new SizeF(0, 5.65f), 90, 1, 1, 0.2);
             }
 
-            out_pcb.FSilk.AddText("This PCB is NOT ready!\nConnect test points to something,\n preferably the connector at the bottom\n autorouter should do well", pcb.Bounds.Center(), 0, 4.5, 4.5, 0.9);
+            switch (bottom_mode)
+            {
+                case BottomMode.PCB_no_connect:
+                    out_pcb.FSilk.AddText("This PCB is NOT ready!\nConnect test points to something,\n preferably the connector at the bottom\n autorouter should do well", pcb.Bounds.Center(), 0, 4.5, 4.5, 0.9);
+                    break;
+                case BottomMode.PCB_connect_direct:
+                    for (int i = 0; i < pads.Count; i++)
+                    {
+                        out_pcb.Traces.SetTraceStart(testPoints[i].Pads[1], 0.6); 
+                        out_pcb.Traces.ContinueTrace(connector.Pads[pads.Count - i]);
+                    }
+                    out_pcb.FSilk.AddText("This PCB is NOT ready!\nVerify all connections are good", pcb.Bounds.Center(), 0, 4.5, 4.5, 0.9);
+                    break;
+                case BottomMode.PCB_connect_via_grid:
+                    for (int i = 0; i < pads.Count; i++)
+                    {
+                        out_pcb.Traces.SetTraceStart(testPoints[i].Pads[1], 0.6);
+                        out_pcb.Traces.ContinueTrace(new PointF(connector.Pads[pads.Count - i].Location.X, testPoints[i].Pads[1].Location.Y));
+                        out_pcb.Traces.ContinueWithVia(0.7, 0.6);
+                        out_pcb.Traces.ContinueTrace(connector.Pads[pads.Count - i]);
+                   }
+                    out_pcb.FSilk.AddText("This PCB is NOT ready!\nVerify all connections are good", pcb.Bounds.Center(), 0, 4.5, 4.5, 0.9);
+                    break;
+                default:
+                    throw new NotImplementedException();
+
+            }
             out_pcb.MoveAll(new SizeF(100, 100));
             return out_pcb;
+        }
+
+        public enum BottomMode
+        {
+            Printed,
+            PCB_no_connect,
+            PCB_connect_direct,
+            PCB_connect_via_grid
         }
 
         /// <summary>
@@ -186,16 +225,16 @@ difference() {
         /// </summary>
         /// <param name="base_name">base bame for files created</param>
         /// <param name="pcb_bottom">should the bottom layer be plastic (with standard headers inserts) or a PCB (needs to be finished manually)</param>
-        public void Generate(string base_name, bool pcb_bottom = false)
+        public void Generate(string base_name, BottomMode bottom_mode)
         {
-            if (!pcb_bottom)
+            if (bottom_mode == BottomMode.Printed)
             {
                 File.WriteAllText(base_name + "_bottom.scad", BaseShape(5, 5, 1.1, 3.2, 2, 2.2));
                 File.WriteAllText(base_name + "_spacer.scad", BaseShape(16, 16, 1.1, 1.5, 2, 2.2));
             }
             else
             {
-                File.WriteAllText(base_name + "_bottom.kicad_pcb", CreatePCBBottom().ToString());
+                File.WriteAllText(base_name + "_bottom.kicad_pcb", CreatePCBBottom(bottom_mode).ToString());
                 File.WriteAllText(base_name + "_spacer_top.scad", BaseShape(10.5, 10.5, 1.5, 1.5, 0, 2.2));
 
                 float left = pcb.Bounds.Left -10;
