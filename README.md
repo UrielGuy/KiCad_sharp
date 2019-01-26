@@ -27,7 +27,7 @@ At this stage I'd recommend checking the samples in the solution. They show alot
 10. run the DRC checks, just to make sure. Also pree "check unconnected" 
 11. You're done. Plot out your board and have it made at your favorite PCB fab. 
 
-## Konown Issues: 
+## Known Issues: 
 - Text tags are not rotated with components
 - API for arcs is not uniform between drawing layers and Copper layers
 - Bounds are not properly calculated for arcs.
