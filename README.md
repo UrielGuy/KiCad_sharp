@@ -7,7 +7,7 @@ This library is REALLY usefull in a few cases:
 - If you need to create a board with a parametric design.
 - Creating PCBs with rounded features. While arcs are much better with KiCad 5, round traces are still not supported natively. This library allows for rounded traces quite easily
 - If you want to easily export information about the circuit to other programs (so far I only developed support for OpenScad)
-- The automatic programming jig generation is quite useful.
+- The automatic programming jig generation is a great feature that can save hours of work and tons of money..
 
 ## why NOT use this library?
 - If you have a very complicated board with lots of component then coding them will be tedious
