@@ -1,4 +1,5 @@
 Hello Hackaday peeps. A photographed manual on programming jig assembly will be up over the weekend.
+Most documentation is here: https://github.com/UrielGuy/KiCad_sharp/wiki
 
 # KiCad_sharp
 A C# library wrapping some of KiCad's functionallity, allowing for some features not in the software and programmatic circuit creation.
