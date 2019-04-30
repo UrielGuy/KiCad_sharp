@@ -1,3 +1,5 @@
+Hello Hackaday peeps. A photographed manual on programming jig assembly will be up over the weekend.
+
 # KiCad_sharp
 A C# library wrapping some of KiCad's functionallity, allowing for some features not in the software and programmatic circuit creation.
 It was created for a specific project and since has proven useful for many of them. For simple boards I rather work with this as it allows for easier changes.
